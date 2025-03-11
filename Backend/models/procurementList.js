@@ -7,10 +7,17 @@ const procurementListSchema = new mongoose.Schema({
         required:true
     },
     items:[{
-        itemId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref: "Item",
+        name:{
+            type:String,
             required:true
+        },
+        description:{
+            type:String,
+            required:true
+        },
+        price:{
+            type:Number,
+            required:false
         },
         quantity:{
             type:Number,

@@ -29,8 +29,33 @@ const getProcurement = async(req,res,next)=>{
     }
 }
 
+const getAllProcurement = async(req,res,next)=>{
+    try{
+        const procurementList = await ProcurementList.find();
+        if(!procurementList){
+            return res.status(404).json({message:"No procurement request found"});
+        } 
+        return res.status(200).json(procurementList);
+    }catch(error){
+        next(error);
+    }
+}
+
+const getAllProcurementUser = async(req,res,next) =>{
+    try{
+        const procurementList = await ProcurementList.find({user:req.user.userId});
+        if(!procurementList){
+            return res.status(404).json({message:"No procurement request found"});
+        }
+        return res.status(200).json(procurementList);
+    }catch(error){
+        next(error);
+    }
+}
 
 module.exports ={
     addProcurement,
-    getProcurement
+    getProcurement,
+    getAllProcurement,
+    getAllProcurementUser,
 }

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
+const procurementListRoutes = require("./routes/procurementListRoutes");
 
 //modules in backend server
 const errorHandler = require("./utils/errorHandler");
@@ -27,6 +28,7 @@ const connectToDatabase = async()=>{
  app.use(express.json());
  app.use(cors());
  app.use("/api/users", userRoutes);
+ app.use("/api/procurement", procurementListRoutes);
 
 
  app.use(errorHandler);
