@@ -1,17 +1,19 @@
 import React from "react";
 import {Routes, Route} from "react-router"
 import Header from "./components/Header";
+import Body from "./components/Body";
 
 function App() {
   return (
     <>
-    <Router>
-      <Routes path="/" element ={
+    <Routes>
+      <Route path="/" element ={
         <>
         <Header/>
+        <Body/>
         </>
-      }></Routes>
-    </Router>
+      }></Route>
+    </Routes>
     
     </>
   );
