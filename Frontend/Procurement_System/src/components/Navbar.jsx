@@ -4,19 +4,12 @@ import {Menu, X} from "lucide-react";
 import {AuthContext} from "../AuthContext";
 
 const Navlink = ()=>{
-    // const {isLoggedIn, isAdmin, logout} = useContext(AuthContext);
-    // const navigate = useNavigate();
-
-    // const handleLogout = ()=>{
-    //     logout();
-    //     navigate("/")
-    // };
 
     return(
         <>
+            <NavLink to="/">Home</NavLink>
             <NavLink to="/about">About</NavLink>
-            <NavLink to="/blog">Blog</NavLink>
-            <NavLink to="/projects">Projects</NavLink>
+            <NavLink to="/login">Login</NavLink>
         </>
     )
 }
@@ -30,7 +23,7 @@ const Navbar =()=>{
 
     return(
        <>
-         <nav className="w-1/3 flex justify-end">
+         <nav className="w-1/3 flex justify-end p-2">
             <div className="hidden w-full md:flex justify-between"><Navlink/></div>
             <div className="md:hidden">
                 <button onClick={toggleNavbar}>{isOpen ? <X /> : <Menu />}</button>

@@ -1,12 +1,15 @@
+import Body from './Body';
 import Logo from './Logo';
 import Navbar from './Navbar';
 
 
-export const Header = ()=>{
+export const Header = () => {
     return (
-        <header className ="sticky top-0 z-[1] mx-auto  flex w-full max-w-7xl flex-wrap items-center justify-between border-b border-gray-100 bg-background p-[2em] font-sans font-bold uppercase text-text-primary backdrop-blur-[100px] dark:border-gray-800 dark:bg-d-background dark:text-d-text-primary">
-            <Logo/>
-            <Navbar/>
+        <header className="sticky top-0 z-50 w-full h-14 bg-white bg-opacity-90 backdrop-blur-xl shadow-md border-b border-gray-200 dark:bg-gray-900 dark:bg-opacity-90 dark:border-gray-700 dark:text-white transition-all duration-300">
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-6 py-2 md:py-3">
+                <Logo/>
+                <Navbar />
+            </div>
         </header>
     )
 }

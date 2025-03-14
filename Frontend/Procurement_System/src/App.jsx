@@ -2,6 +2,7 @@ import React from "react";
 import {Routes, Route} from "react-router"
 import Header from "./components/Header";
 import Body from "./components/Body";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -12,7 +13,13 @@ function App() {
         <Header/>
         <Body/>
         </>
-      }></Route>
+      }/>
+      <Route path="/login" element={
+      <>
+      <Header/>
+      <Login/>
+      </>
+      }/>
     </Routes>
     
     </>
