@@ -12,9 +12,9 @@ const Body =()=>
             <h2 className="text-2xl font-semibold text-gray-800 text-center">Procurement Request</h2>
         </div>
     </NavLink>
-    <NavLink to="/quotation">
+    <NavLink to="/Status">
         <div className="w-80 h-60 flex items-center justify-center rounded-2xl overflow-hidden shadow-lg bg-white p-8 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-            <h2 className="text-2xl font-semibold text-gray-800 text-center">Request for Quotation</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 text-center">Procurement List</h2>
         </div>
     </NavLink>
 </div>

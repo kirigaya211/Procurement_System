@@ -1,42 +1,92 @@
-import React, {useContext, useState} from "react";
-import {NavLink} from "react-router-dom";
-import {Menu, X} from "lucide-react";
-import {AuthContext} from "../AuthContext";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
+import OSASLogo from "../assets/OSAS.png"
 
-const Navlink = ()=>{
+const Navbar = () => {
+  const { isLoggedIn, isAdmin, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    return(
-        <>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/about">About</NavLink>
-            <NavLink to="/login">Login</NavLink>
-        </>
-    )
-}
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
-const Navbar =()=>{
-    const[isOpen, setIsOpen]=useState(false);
-
-    const toggleNavbar = ()=>{
-        setIsOpen(!isOpen);
-    }
-
-    return(
-       <>
-         <nav className="w-1/3 flex justify-end p-2">
-            <div className="hidden w-full md:flex justify-between"><Navlink/></div>
-            <div className="md:hidden">
-                <button onClick={toggleNavbar}>{isOpen ? <X /> : <Menu />}</button>
+  return (
+    <nav className="bg-maroon text-white shadow-lg">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="logo h-16 w-16">
+              <img
+                src={OSASLogo}
+                alt="logo"
+                style={{ height: "40px", marginRight: "10px" }}
+              ></img>
             </div>
-        </nav>
-        {isOpen &&(
-            <div className="flex flex-col items-center basis-full">
-                <Navlink/>
-            </div>
-        )}
-       </>
-    )
-}
+        <Link
+          to="/"
+          className="text-orange-500 text-2xl font-bold hover:text-orange-400 transition"
+        >
+          Procurement
+        </Link>
 
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden">
+          <button
+            className="text-orange-500 hover:text-orange-400 focus:outline-none"
+            onClick={() =>
+              document.getElementById("menu").classList.toggle("hidden")
+            }
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+     
+        <div id="menu" className="hidden lg:flex space-x-6 items-center">
+          {isLoggedIn ? (
+            <>
+              <Link
+                to="/"
+                className="text-white hover:text-orange-500 transition"
+              >
+                Home
+              </Link>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="text-white hover:text-orange-500 transition"
+                >
+                  Admin
+                </Link>
+              )}
+              <button
+                onClick={handleLogout}
+                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md transition"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <div>
+                </div>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;

@@ -26,7 +26,7 @@ const Login =()=>{
                 const data = await response.json();
                 login(data.token);
                 setMessage("Login successful!");
-                navigate("/");
+                navigate("/body");
             }else{
                 const error = await response.json();
                 setMessage(error.error || "Login failed. Please try again")

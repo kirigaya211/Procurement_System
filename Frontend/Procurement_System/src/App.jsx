@@ -1,8 +1,9 @@
 import React from "react";
 import {Routes, Route} from "react-router"
-import Header from "./components/Header";
+import Navbar from "./components/Navbar"
 import Body from "./components/Body";
 import Login from "./components/Login";
+import Procurement  from "./components/Procurement";
 
 function App() {
   return (
@@ -10,18 +11,23 @@ function App() {
     <Routes>
       <Route path="/" element ={
         <>
-        <Header/>
-        <Body/>
+        <Navbar/>
+        <Login/>
         </>
       }/>
-      <Route path="/login" element={
+      <Route path="/body" element={
       <>
-      <Header/>
-      <Login/>
+      <Navbar/>
+      <Body/>
       </>
       }/>
+      <Route path="/procurement" element={
+        <>
+        <Navbar/>
+        <Procurement/>
+        </>
+      }/>
     </Routes>
-    
     </>
   );
 }

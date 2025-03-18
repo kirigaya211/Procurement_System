@@ -23,7 +23,13 @@ const procurementListSchema = new mongoose.Schema({
             type:Number,
             required:true,
         }
-    }]
+    }],
+    status:{
+        type:String,
+        required:true,
+        default:"submitted",
+        enum:["submitted","processed","RQ","awarded"]
+    }
 },
 {
     timestamps:true
