@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar"
 import Body from "./components/Body";
 import Login from "./components/Login";
 import Procurement  from "./components/Procurement";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -25,6 +26,12 @@ function App() {
         <>
         <Navbar/>
         <Procurement/>
+        </>
+      }/>
+      <Route path="/register" element={
+        <>
+        <Navbar/>
+        <Register/>
         </>
       }/>
     </Routes>

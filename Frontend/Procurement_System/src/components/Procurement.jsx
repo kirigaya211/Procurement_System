@@ -41,7 +41,7 @@ const ProcurementInput = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/procurement/submit", {
+      const response = await fetch("http://localhost:3001/api/procurement/add-procurement-list", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
