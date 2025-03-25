@@ -7,6 +7,7 @@ const addProcurement = async(req,res,next)=>{
         const{items}=req.body;
         const procurement = new ProcurementList({
             items,
+            procure,
             user: req.user.userId
         });
         await procurement.save();
@@ -43,8 +44,8 @@ const getAllProcurement = async(req,res,next)=>{
 
 const getAllProcurementUser = async(req,res,next) =>{
     try{
-        const procurementList = await ProcurementList.find({user:req.user.userId});
-        if(!procurementList){
+        const procurementList = await ProcurementList.find({user:req.user.userId}).populate("user");
+        if(!procurementList || procurementList.length===0){
             return res.status(404).json({message:"No procurement request found"});
         }
         return res.status(200).json(procurementList);

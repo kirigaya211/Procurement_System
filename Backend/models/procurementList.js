@@ -6,6 +6,11 @@ const procurementListSchema = new mongoose.Schema({
         ref:"User",
         required:true
     },
+    procure:{
+        type:String,
+        required:true
+    }
+    ,
     items:[{
         name:{
             type:String,

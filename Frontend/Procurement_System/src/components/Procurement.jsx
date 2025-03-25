@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 
 const ProcurementInput = () => {
   const { id } = useParams();
+  
+  const [procurementName, setProcurementName] = useState("");  // New procurement name state
   const [itemName, setItemName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -19,7 +21,9 @@ const ProcurementInput = () => {
         price: parseFloat(price).toFixed(2),
         quantity: parseInt(quantity),
       };
+
       setItemList([...itemList, newItem]);
+      
       setItemName("");
       setDescription("");
       setPrice("");
@@ -34,6 +38,12 @@ const ProcurementInput = () => {
 
   const submitList = async () => {
     const token = localStorage.getItem("token");
+
+    if (!procurementName.trim()) {
+      setMessage("Error: Procurement name is required.");
+      return;
+    }
+
     if (itemList.length === 0) {
       alert("No items to submit!");
       return;
@@ -44,17 +54,19 @@ const ProcurementInput = () => {
       const response = await fetch("http://localhost:3001/api/procurement/add-procurement-list", {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           user: id,  
-          items: itemList
-        })
+          procure: procurementName,    
+          items: itemList,
+        }),
       });
 
       if (response.ok) {
-        setItemList([]);  
+        setProcurementName("");   
+        setItemList([]);
         setMessage("List submitted successfully!");
       } else {
         const error = await response.json();
@@ -69,13 +81,25 @@ const ProcurementInput = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-        <h1 className="text-2xl font-bold text-gray-700 mb-6">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-6">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
           Procurement Input
         </h1>
 
+        {/* Procurement Name Input */}
         <div className="space-y-4">
+          <input
+            type="text"
+            value={procurementName}
+            onChange={(e) => setProcurementName(e.target.value)}
+            placeholder="Procurement Name (e.g., Office Supplies)"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        {/* Item Inputs */}
+        <div className="space-y-4 mt-6">
           <input
             type="text"
             value={itemName}
@@ -106,6 +130,8 @@ const ProcurementInput = () => {
               className="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
             />
           </div>
+          
+          {/* Add Item Button */}
           <button
             onClick={addItem}
             className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
@@ -114,6 +140,7 @@ const ProcurementInput = () => {
           </button>
         </div>
 
+        {/* Item List */}
         <ul className="mt-6 space-y-4">
           {itemList.map((item, index) => (
             <li
@@ -149,6 +176,7 @@ const ProcurementInput = () => {
           <p className="text-gray-400 mt-4 text-center">No items added yet.</p>
         )}
 
+        {/* Submit Button */}
         <div className="mt-6">
           <button
             onClick={submitList}
@@ -160,8 +188,13 @@ const ProcurementInput = () => {
             {loading ? "Submitting..." : "Submit List"}
           </button>
 
+          {/* Message Display */}
           {message && (
-            <p className={`text-center mt-4 ${message.includes("Error") ? "text-red-500" : "text-green-500"}`}>
+            <p
+              className={`text-center mt-4 ${
+                message.includes("Error") ? "text-red-500" : "text-green-500"
+              }`}
+            >
               {message}
             </p>
           )}

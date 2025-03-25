@@ -25,7 +25,7 @@ const Register = () => {
         setTimeout(() => navigate("/"), 2000);
       } else {
         const error = await response.json();
-        setMessage(error.message || "Registration failed, please try again");
+        setMessage(error.message || "Account already exists. Please login.");
       }
     } catch (error) {
       setMessage("An error occurred. Please try again later.");
