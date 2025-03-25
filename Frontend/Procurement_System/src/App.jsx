@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Procurement  from "./components/Procurement";
 import Register from "./components/Register";
 import ProcurementList from "./components/ProcurementList";
+import ManageProcurement from "./components/AdminDashboard";
 
 function App() {
   return (
@@ -41,14 +42,12 @@ function App() {
         <ProcurementList/>
         </>
       }/>
-      {/* <Route path="/procurementList" element={
-          <>
-            <Navbar />
-            <div className="text-center p-10 text-red-500">
-              <h2>No Procurement ID provided</h2>
-            </div>
-          </>
-        } /> */}
+      <Route path="/manageProcurement" element={
+        <>
+        <Navbar/>
+        <ManageProcurement/>
+        </>
+      } />
     </Routes>
     </>
   );

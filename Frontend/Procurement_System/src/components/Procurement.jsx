@@ -87,7 +87,7 @@ const ProcurementInput = () => {
           Procurement Input
         </h1>
 
-        {/* Procurement Name Input */}
+       
         <div className="space-y-4">
           <input
             type="text"
@@ -98,7 +98,7 @@ const ProcurementInput = () => {
           />
         </div>
 
-        {/* Item Inputs */}
+     
         <div className="space-y-4 mt-6">
           <input
             type="text"

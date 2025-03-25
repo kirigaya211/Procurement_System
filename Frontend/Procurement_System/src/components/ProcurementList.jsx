@@ -103,7 +103,7 @@ const ProcurementList = () => {
                         key={procurement._id}
                         className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition"
                     >
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">ID: {procurement._id}</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{procurement.procure}</h2>
                         <p className={`text-sm ${procurement.status === "Cancelled" ? "text-red-500" : "text-green-500"} mb-4`}>
                             Status: {procurement.status}
                         </p>
