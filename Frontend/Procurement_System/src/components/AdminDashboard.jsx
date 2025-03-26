@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import * as XLSX from "xlsx";  
+
 
 const ManageProcurement = () => {
   const [procurements, setProcurements] = useState([]);
@@ -9,17 +11,22 @@ const ManageProcurement = () => {
 
   useEffect(() => {
     const fetchProcurement = async () => {
-      // const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-      // if(!token){
-      //     setMessage("You must be logged in to manage facilities");
-      //     setLoading(false);
-      //     return;
-      // }
+      if (!token) {
+        setMessage("You must be logged in to manage facilities");
+        setLoading(false);
+        return;
+      }
 
       try {
         const response = await fetch(
-          "http://localhost:3001/api/procurement/get-all-procurement-list"
+          "http://localhost:3001/api/procurement//get-all-procurement-list", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
         );
         if (response.ok) {
           const data = await response.json();
@@ -30,10 +37,33 @@ const ManageProcurement = () => {
         }
       } catch (error) {
         setMessage("An error occurred while fetching facilities.");
+      } finally {
+        setLoading(false);
       }
     };
     fetchProcurement();
   }, []);
+
+
+  const handleExport = async (procurement) => {
+    try {
+      const data = await fetch(`http://localhost:3001/api/procurement/get-procurement-list/${procurement}`
+      );
+      const response = await data.json()
+      // console.log("Export Response:", response);
+      var wb = XLSX.utils.book_new();
+      var ws = XLSX.utils.json_to_sheet(response.items);
+
+      XLSX.utils.book_append_sheet(wb, ws, "Request for Procurement");
+
+      XLSX.writeFile(wb, "Procurement.xlsx");
+    } catch (error) {
+      console.log(error)
+    }
+
+
+
+  }
 
   return (
     <div className="min-w-full container mt-5">
@@ -50,13 +80,14 @@ const ManageProcurement = () => {
         </div>
       )}
       {!loading && procurements.length > 0 && (
-        <div className="flex-row">
+        <div className=" flex-row justify-items-center">
           {procurements.map((procurement) => (
             <div key={procurement._id}>
-              <div className="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white p-6">
-                <div className="display-block text-bold text-yellow-400 text-4xl mb-4">
+              <div className="w-full rounded-lg overflow-hidden shadow-lg bg-white p-6 text-center">
+                <div className="display-block text-bold text-red-400 text-4xl mb-4">
                   {procurement.procure}
                 </div>
+                <button onClick={() => handleExport(procurement._id)} className="text-bold text-blue-400">Export</button>
               </div>
             </div>
           ))}

@@ -6,7 +6,7 @@ import Login from "./components/Login";
 import Procurement  from "./components/Procurement";
 import Register from "./components/Register";
 import ProcurementList from "./components/ProcurementList";
-import ManageProcurement from "./components/AdminDashboard";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   return (
@@ -42,10 +42,10 @@ function App() {
         <ProcurementList/>
         </>
       }/>
-      <Route path="/manageProcurement" element={
+      <Route path="/adminDashboard" element={
         <>
         <Navbar/>
-        <ManageProcurement/>
+        <AdminDashboard/>
         </>
       } />
     </Routes>
