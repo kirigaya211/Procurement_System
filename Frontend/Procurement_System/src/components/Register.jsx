@@ -33,7 +33,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center mt-20 ">
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm w-full">
         <div className="text-center">
           <img

@@ -23,7 +23,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-maroon text-white shadow-lg">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="container mx-auto px-6 flex justify-between items-center">
         <div className="logo h-16 w-16">
           <img
             src={OSASLogo}
