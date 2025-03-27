@@ -131,7 +131,7 @@ const ProcurementInput = () => {
             />
           </div>
           
-          {/* Add Item Button */}
+    
           <button
             onClick={addItem}
             className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
@@ -140,7 +140,7 @@ const ProcurementInput = () => {
           </button>
         </div>
 
-        {/* Item List */}
+    
         <ul className="mt-6 space-y-4">
           {itemList.map((item, index) => (
             <li
@@ -176,7 +176,7 @@ const ProcurementInput = () => {
           <p className="text-gray-400 mt-4 text-center">No items added yet.</p>
         )}
 
-        {/* Submit Button */}
+  
         <div className="mt-6">
           <button
             onClick={submitList}
@@ -188,7 +188,6 @@ const ProcurementInput = () => {
             {loading ? "Submitting..." : "Submit List"}
           </button>
 
-          {/* Message Display */}
           {message && (
             <p
               className={`text-center mt-4 ${

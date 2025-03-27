@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import * as XLSX from "xlsx";  
-
+import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 const ManageProcurement = () => {
   const [procurements, setProcurements] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [details, setDetails] = useState(null);
+  const [selectedProcurement, setSelectedProcurement] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,36 +15,64 @@ const ManageProcurement = () => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        setMessage("You must be logged in to manage facilities");
+        setMessage("You must be logged in to manage procurements.");
         setLoading(false);
         return;
       }
 
       try {
         const response = await fetch(
-          "http://localhost:3001/api/procurement//get-all-procurement-list", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
+          "http://localhost:3001/api/procurement/get-all-procurement-list", {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` }
           }
-        }
         );
+
         if (response.ok) {
           const data = await response.json();
           setProcurements(data);
         } else {
           const error = await response.json();
-          setMessage(error.message || "Failed to fetch facilities");
+          setMessage(error.message || "Failed to fetch procurements.");
         }
       } catch (error) {
-        setMessage("An error occurred while fetching facilities.");
+        setMessage("An error occurred while fetching procurements.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchProcurement();
   }, []);
 
+  const fetchDetails = async (procurementId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setMessage("You must be logged in.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/procurement/get-procurement-list/${procurementId}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setDetails(data);
+        setSelectedProcurement(procurementId);
+      } else {
+        const error = await response.json();
+        setMessage(error.message || "Failed to fetch details.");
+      }
+    } catch (error) {
+      setMessage("Error fetching procurement details.");
+    }
+  };
 
   const handleExport = async (procurementId) => {
     try {
@@ -51,13 +80,12 @@ const ManageProcurement = () => {
         `http://localhost:3001/api/procurement/get-procurement-list/${procurementId}`
       );
       const data = await response.json();
-  
+
       if (!data || !data.items || data.items.length === 0) {
         console.log("No data found!");
         return;
       }
-  
-      // ✅ Format the data for export
+
       const formattedData = data.items.map((item, index) => ({
         "No.": index + 1,
         "Item Name": item.name || "N/A",
@@ -68,67 +96,43 @@ const ManageProcurement = () => {
         "Requested By": item.requestedBy || "Unknown",
         "Date Requested": new Date(item.date).toLocaleDateString() || "N/A",
       }));
-  
-      // ✅ Create Excel Workbook and Worksheet
+
       const wb = XLSX.utils.book_new();
-      
-      // ✅ Template Layout (Header + Metadata + Data)
+
       const template = [
-        ["Procurement Export Report"],                            // Title
-        [`Export Date: ${new Date().toLocaleString()}`],          // Metadata
-        [`Prepared By: Procurement Team`],                        // Metadata
-        [],                                                       // Empty row for spacing
-        ["No.", "Item Name", "Description", "Quantity", "Unit Price", "Total Price", "Requested By", "Date Requested"] // Column Headers
+        ["Procurement Export Report"],
+        [`Export Date: ${new Date().toLocaleString()}`],
+        [`Prepared By: Procurement Team`],
+        [],
+        ["No.", "Item Name", "Description", "Quantity", "Unit Price", "Total Price", "Requested By", "Date Requested"]
       ];
-  
-      // ✅ Add the main data below the template
+
       const jsonSheet = XLSX.utils.json_to_sheet(formattedData, { origin: "A6" });
-  
-      // ✅ Add the template to the worksheet
       const headerSheet = XLSX.utils.aoa_to_sheet(template);
-  
-      // ✅ Combine the template and data into one sheet
+
       const ws = { ...headerSheet, ...jsonSheet };
-  
-      // ✅ Add custom column widths
+
       ws["!cols"] = [
-        { wch: 5 },   // No.
-        { wch: 20 },  // Item Name
-        { wch: 30 },  // Description
-        { wch: 10 },  // Quantity
-        { wch: 15 },  // Unit Price
-        { wch: 15 },  // Total Price
-        { wch: 20 },  // Requested By
-        { wch: 15 },  // Date Requested
+        { wch: 5 },
+        { wch: 20 },
+        { wch: 30 },
+        { wch: 10 },
+        { wch: 15 },
+        { wch: 15 },
+        { wch: 20 },
+        { wch: 15 },
       ];
-  
-      // ✅ Apply Merged Cells for Title and Metadata
+
       ws["!merges"] = [
-        { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },  // Merge title row
-        { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } },  // Merge export date
-        { s: { r: 2, c: 0 }, e: { r: 2, c: 7 } },  // Merge author row
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
+        { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } },
+        { s: { r: 2, c: 0 }, e: { r: 2, c: 7 } },
       ];
-  
-      // ✅ Apply styles to the header row
-      const range = XLSX.utils.decode_range(ws["!ref"]);
-      for (let C = 0; C < 8; ++C) {
-        const headerCell = ws[XLSX.utils.encode_cell({ r: 4, c: C })];  // Header row (index 4)
-        if (headerCell) {
-          headerCell.s = {
-            font: { bold: true, color: { rgb: "FFFFFF" } },
-            fill: { fgColor: { rgb: "4F81BD" } },  // Blue background
-            alignment: { horizontal: "center", vertical: "center" },
-          };
-        }
-      }
-  
-      // ✅ Append worksheet to workbook
+
       XLSX.utils.book_append_sheet(wb, ws, "Procurement Report");
-  
-      // ✅ Save the Excel file
       XLSX.writeFile(wb, "Procurement_Report.xlsx");
       console.log("Exported successfully!");
-  
+
     } catch (error) {
       console.error("Error exporting:", error);
     }
@@ -136,11 +140,11 @@ const ManageProcurement = () => {
 
   return (
     <div className="min-w-full container mt-5">
-      <div className=" text-center mb-4">
-        <h1 className="display-block text-bold text-yellow-400 text-4xl mb-4">
+      <div className="text-center mb-4">
+        <h1 className="text-bold text-yellow-400 text-4xl mb-4">
           Manage Procurement
         </h1>
-        <p className="text-gray-400 ">View and Manage Procurement</p>
+        <p className="text-gray-400">View and Manage Procurement</p>
       </div>
 
       {message && (
@@ -148,20 +152,66 @@ const ManageProcurement = () => {
           {message}
         </div>
       )}
-      {!loading && procurements.length > 0 && (
-        <div className=" flex-row justify-items-center">
-          {procurements.map((procurement) => (
-            <div key={procurement._id}>
-              <div className="w-full rounded-lg overflow-hidden shadow-lg bg-white p-6 text-center">
-                <div className="display-block text-bold text-red-400 text-4xl mb-4">
-                  {procurement.procure}
-                </div>
-                <button onClick={() => handleExport(procurement._id)} className="text-bold text-blue-400">Export</button>
+
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-1">
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            procurements.map((procurement) => (
+              <div
+                key={procurement._id}
+                className={`cursor-pointer p-5 rounded-lg shadow-lg mb-4 
+                  ${selectedProcurement === procurement._id ? "bg-blue-100" : "bg-white"}`}
+                onClick={() => fetchDetails(procurement._id)}
+              >
+                <h2 className="text-xl font-bold">{procurement.procure}</h2>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();  
+                    handleExport(procurement._id);
+                  }}
+                  className="bg-blue-500 text-white px-4 py-2 mt-2 rounded-md"
+                >
+                  Export
+                </button>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
-      )}
+
+        <div className="col-span-2">
+          {details ? (
+            <div className="p-6 bg-gray-100 rounded-lg shadow-md">
+              <h2 className="text-2xl font-bold mb-4">Details</h2>
+
+              <table className="min-w-full bg-white border rounded-lg">
+                <thead className="bg-gray-800 text-white">
+                  <tr>
+                    <th className="py-2 px-4">Item Name</th>
+                    <th className="py-2 px-4">Description</th>
+                    <th className="py-2 px-4">Quantity</th>
+                    <th className="py-2 px-4">Unit Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {details.items?.map((item) => (
+                    <tr key={item._id} className="border-t hover:bg-gray-50">
+                      <td className="py-2 px-4">{item.name}</td>
+                      <td className="py-2 px-4">{item.description}</td>
+                      <td className="py-2 px-4">{item.quantity}</td>
+                      <td className="py-2 px-4">₱{item.price}</td>
+                      
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p>Select a procurement to see details.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
