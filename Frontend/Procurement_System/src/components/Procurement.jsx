@@ -40,7 +40,7 @@ const ProcurementInput = () => {
     const token = localStorage.getItem("token");
 
     if (!procurementName.trim()) {
-      setMessage("Error: Procurement name is required.");
+      setMessage("Error: Procurement purpose is required.");
       return;
     }
 
@@ -93,8 +93,8 @@ const ProcurementInput = () => {
             type="text"
             value={procurementName}
             onChange={(e) => setProcurementName(e.target.value)}
-            placeholder="Procurement Name (e.g., Office Supplies)"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+            placeholder="Procurement Purpose (e.g., Office Supplies)"
+            className="w-full px-4 py-2 border-b-2 border-gray-300  focus:ring-2"
           />
         </div>
 
