@@ -81,20 +81,20 @@ const ProcurementInput = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-6">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+    <div className="min-h-screen  flex justify-center items-center p-6">
+      <div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-2xl">
+        <h1 className="text-4xl font-semibold text-gray-800 mb-6 text-center">
           Procurement Input
         </h1>
 
-       
+    
         <div className="space-y-4">
           <input
             type="text"
             value={procurementName}
             onChange={(e) => setProcurementName(e.target.value)}
             placeholder="Procurement Purpose (e.g., Office Supplies)"
-            className="w-full px-4 py-2 border-b-2 border-gray-300  focus:ring-2"
+            className="w-full px-4 py-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition ease-in-out"
           />
         </div>
 
@@ -105,14 +105,14 @@ const ProcurementInput = () => {
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
             placeholder="Item Name"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition ease-in-out"
           />
           <input
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition ease-in-out"
           />
           <div className="flex space-x-4">
             <input
@@ -120,50 +120,41 @@ const ProcurementInput = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder="Price"
-              className="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+              className="w-1/2 px-4 py-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition ease-in-out"
             />
             <input
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               placeholder="Quantity"
-              className="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+              className="w-1/2 px-4 py-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition ease-in-out"
             />
           </div>
-          
-    
+         
           <button
             onClick={addItem}
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+            className="w-full bg-blue-500 text-white px-4 py-3 rounded-md hover:bg-blue-600 transition transform duration-300"
           >
             Add Item
           </button>
         </div>
 
-    
         <ul className="mt-6 space-y-4">
           {itemList.map((item, index) => (
             <li
               key={index}
-              className="bg-gray-50 p-4 rounded-md shadow-sm hover:shadow-md transition"
+              className="bg-gray-50 p-4 rounded-md shadow-sm hover:shadow-lg transition duration-200"
             >
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {item.name}
-                  </h2>
+                  <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
                   <p className="text-sm text-gray-600">{item.description}</p>
-                  <p className="text-sm">
-                    💰 Price: <span className="font-bold">₱{item.price}</span>
-                  </p>
-                  <p className="text-sm">
-                    📦 Quantity:{" "}
-                    <span className="font-bold">{item.quantity}</span>
-                  </p>
+                  <p className="text-sm">💰 Price: <span className="font-bold">₱{item.price}</span></p>
+                  <p className="text-sm">📦 Quantity: <span className="font-bold">{item.quantity}</span></p>
                 </div>
                 <button
                   onClick={() => deleteItem(index)}
-                  className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-200"
                 >
                   Remove
                 </button>
@@ -176,24 +167,17 @@ const ProcurementInput = () => {
           <p className="text-gray-400 mt-4 text-center">No items added yet.</p>
         )}
 
-  
         <div className="mt-6">
           <button
             onClick={submitList}
             disabled={loading}
-            className={`w-full px-4 py-2 text-white rounded-md ${
-              loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
-            } transition`}
+            className={`w-full px-4 py-3 text-white rounded-md ${loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"} transition duration-200`}
           >
             {loading ? "Submitting..." : "Submit List"}
           </button>
 
           {message && (
-            <p
-              className={`text-center mt-4 ${
-                message.includes("Error") ? "text-red-500" : "text-green-500"
-              }`}
-            >
+            <p className={`text-center mt-4 ${message.includes("Error") ? "text-red-500" : "text-green-500"}`}>
               {message}
             </p>
           )}

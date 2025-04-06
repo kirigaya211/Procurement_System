@@ -52,12 +52,12 @@ const ProcurementList = () => {
         const token = localStorage.getItem("token");
         try {
             const response = await fetch(
-                `http://localhost:3001/api/procurement/cancel/${procurementId}`,  
+                `http://localhost:3001/api/procurement/cancel/${procurementId}`,
                 {
                     method: "DELETE",
                     headers: {
                         Authorization: `Bearer ${token}`,
-                    }
+                    },
                 }
             );
 
@@ -97,20 +97,28 @@ const ProcurementList = () => {
         <div className="container mx-auto px-4 py-10">
             <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">Procurement List</h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {procurementList.map((procurement) => (
                     <div
                         key={procurement._id}
-                        className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition"
+                        className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-transform transform hover:scale-105"
                     >
                         <h2 className="truncate w-full text-xl font-semibold text-gray-700 mb-4">{procurement.procure}</h2>
-                        <p> Date submitted: {new Date(procurement.createdAt).toISOString().split('T')[0]}</p>
+                        <p className="text-sm text-gray-600">Date submitted: {new Date(procurement.createdAt).toISOString().split('T')[0]}</p>
                         <p className={`text-sm ${procurement.status === "Cancelled" ? "text-red-500" : "text-green-500"} mb-4`}>
                             Status: {procurement.status}
                         </p>
+
+                        
                     </div>
                 ))}
             </div>
+
+            {message && (
+                <p className={`text-center mt-6 ${message.includes("Error") ? "text-red-500" : "text-green-500"}`}>
+                    {message}
+                </p>
+            )}
         </div>
     );
 };

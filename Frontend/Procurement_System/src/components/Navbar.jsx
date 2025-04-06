@@ -14,7 +14,7 @@ const Navbar = () => {
     navigate("/");
   };
 
-  // Automatically show menu after login
+
   useEffect(() => {
     if (isLoggedIn) {
       setMenuOpen(true);
@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <nav className="bg-maroon text-white shadow-lg">
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <div className="logo h-16 w-16">
+        <div className="logo h-full m-2">
           <img
             src={OSASLogo}
             alt="logo"
@@ -39,7 +39,6 @@ const Navbar = () => {
           Procurement
         </Link>
 
-        {/* Mobile Menu Button */}
         <div className="lg:hidden">
           <button
             className="text-orange-500 hover:text-orange-400 focus:outline-none"
