@@ -51,7 +51,7 @@ const ProcurementInput = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3001/api/procurement/add-procurement-list", {
+      const response = await fetch("https://backend-eeop.onrender.com/api/procurement/add-procurement-list", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -20,7 +20,7 @@ const ProcurementList = () => {
 
             try {
                 const response = await fetch(
-                    `http://localhost:3001/api/procurement/get-all-procurement-list-user`,
+                    `https://backend-eeop.onrender.com/api/procurement/get-all-procurement-list-user`,
                     {
                         method: "GET",
                         headers: {
@@ -52,7 +52,7 @@ const ProcurementList = () => {
         const token = localStorage.getItem("token");
         try {
             const response = await fetch(
-                `http://localhost:3001/api/procurement/cancel/${procurementId}`,
+                `https://backend-eeop.onrender.com/api/procurement/cancel/${procurementId}`,
                 {
                     method: "DELETE",
                     headers: {

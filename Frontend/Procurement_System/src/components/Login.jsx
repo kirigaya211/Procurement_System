@@ -9,13 +9,12 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // ✅ Pass `e` parameter to prevent form reload
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:3001/api/users/login", {
+      const response = await fetch("https://backend-eeop.onrender.com/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,11 +25,11 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         
-        // ✅ Ensure `login()` handles token and state correctly
+        
         login(data.token); 
         setMessage("Login successful!");
 
-        // ✅ Redirect after successful login
+       
         navigate("/body");  
         
       } else {
@@ -56,7 +55,7 @@ const Login = () => {
           <p className="text-gray-500 text-sm">Please enter your details to sign in</p>
         </div>
         
-        {/* ✅ Use the `e` parameter in form submission */}
+      
         <form onSubmit={handleLogin} className="mt-4">
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm text-gray-600">Email Address</label>

@@ -12,6 +12,8 @@ const errorHandler = require("./utils/errorHandler");
 
 dotenv.config();
 
+
+
 const connectToDatabase = async()=>{
     try{
         await mongoose.connect(process.env.MONGODB_URI,{
